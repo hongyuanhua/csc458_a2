@@ -201,6 +201,7 @@ def bufferbloat():
         wait_time.append(tmp)
         plot.append([index,tmp])
         index+=1
+        #do every 2 secs
         sleep(2)
         now = time()
         delta = now - start_time
@@ -211,9 +212,16 @@ def bufferbloat():
     # TODO: compute average (and standard deviation) of the fetch
     # times.  You don't need to plot them.  Just note it in your
     # README and explain.
+    # use np to compute avg and std
     nparr = np.array(wait_time).astype(np.float)
     print("web download average time: %lf \n" % np.mean(nparr))
     print("web download time standard deviation: %lf \n" % np.std(nparr))
+
+    with open('%s/download.txt' % (args.dir), 'w') as f:
+        for ctime in nparr:
+            f.write("%s\n" % ctime)
+        print "done writing download times for %s" % args.dir
+
 
     stop_tcpprobe()
     if qmon is not None:
